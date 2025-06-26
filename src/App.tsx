@@ -188,6 +188,20 @@ const FibonacciVoting = () => {
                 ))}
               </ul>
             </div>
+
+            {currentParticipantId && (
+              <div className="mt-6 flex justify-end">
+                <button
+                  onClick={() => {
+                    console.log('ssss');
+                    socket.emit('resetVotes', roomId);
+                  }}
+                  className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors"
+                >
+                  Reset
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>

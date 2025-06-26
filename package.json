@@ -22,9 +22,10 @@
     "web-vitals": "^2.1.4",
     "zustand": "^5.0.5"
   },
+  "type": "module",
   "scripts": {
     "start": "react-scripts start",
-    "server": "ts-node src/server.ts",
+    "server": "node --loader ts-node/esm src/server.ts",
     "dev": "concurrently \"npm run server\" \"npm run start\"",
     "build": "react-scripts build",
     "test": "react-scripts test",

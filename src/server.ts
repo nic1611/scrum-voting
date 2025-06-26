@@ -56,6 +56,15 @@ io.on('connection', (socket) => {
     }
   });
 
+  socket.on('resetVotes', (roomId: string) => {
+    if (rooms[roomId]) {
+      const participantIds = Object.keys(rooms[roomId].participants);
+      participantIds.map(id => rooms[roomId].votes[id] = null);
+      io.to(roomId).emit('roomUpdate', rooms[roomId]);
+    }  
+
+  });
+
   socket.on('disconnect', () => {
     // Cleanup logic can be added here
   });
