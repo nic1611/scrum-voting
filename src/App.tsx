@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 
-const socket: Socket = io('http://localhost:3001');
+// const socket: Socket = io('http://localhost:3001');
+const socket: Socket = io(process.env.REACT_APP_SOCKET_URL as string, {
+  transports: ['websocket'], // reduz problemas de sticky session
+});
 
 interface RoomState {
   participants: Record<string, string>;

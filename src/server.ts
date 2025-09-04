@@ -8,10 +8,12 @@ app.use(cors());
 app.use(express.json());
 
 const httpServer = createServer(app);
+const allowed = (process.env.CORS_ORIGIN || '').split(',').filter(Boolean);
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"]
+    origin: allowed.length ? allowed : true,
+    methods: ["GET", "POST"],
+    credentials: true,
   }
 });
 
@@ -70,7 +72,7 @@ io.on('connection', (socket) => {
   });
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 httpServer.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
