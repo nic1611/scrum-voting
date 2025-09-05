@@ -35,6 +35,8 @@ io.on('connection', (socket) => {
     rooms[roomId].participants[participantId] = nickname;
     
     socket.join(roomId);
+    socket.data.roomId = roomId;
+    socket.data.participantId = participantId;
     socket.emit('participantId', participantId);
     io.to(roomId).emit('roomUpdate', rooms[roomId]);
   });
@@ -68,7 +70,23 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    // Cleanup logic can be added here
+    const { roomId, participantId } = socket.data;
+    
+    if (roomId && rooms[roomId] && participantId) {
+      delete rooms[roomId].participants[participantId];
+      delete rooms[roomId].votes[participantId];
+      
+      if (Object.keys(rooms[roomId].participants).length === 0) {
+        delete rooms[roomId];
+      } else {
+        const remainingParticipants = Object.keys(rooms[roomId].participants);
+        const allVoted = remainingParticipants.every(id => 
+          rooms[roomId].votes[id] !== null
+        );
+        rooms[roomId].showResults = allVoted;
+        io.to(roomId).emit('roomUpdate', rooms[roomId]);
+      }
+    }
   });
 });
 
