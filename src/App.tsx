@@ -45,7 +45,7 @@ const FibonacciVoting = () => {
   }, []);
 
   const createRoom = () => {
-    const newRoomId = Math.random().toString(36).substring(2, 8);
+    const newRoomId = Math.random().toString(36).substring(2, 8).toUpperCase();
     setRoomId(newRoomId);
     socket.emit('joinRoom', newRoomId, nickname);
   };
@@ -113,7 +113,7 @@ const FibonacciVoting = () => {
                 placeholder="Enter Room ID"
                 className="bg-gray-700 text-white rounded-md p-2"
                 value={roomInput}
-                onChange={(e) => setRoomInput(e.target.value)}
+                onChange={(e) => setRoomInput(e.target.value.toUpperCase())}
               />
               <button 
                 onClick={() => joinRoom(roomInput)}
